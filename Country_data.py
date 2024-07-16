@@ -7,10 +7,10 @@ class Country:
         self.subdivisions = []  # A List that stores the subdivisions
 
     def add_subdivision(self, subdivision):
-        if isinstance(subdivision, Country):
+        if not isinstance(subdivision, Country):
+            raise ValueError ("Subdivison must be a Country Instance")
             self.subdivisions.append(subdivision)
-        else:
-            raise TypeError("Subdivision must be a Country instance")
+
 
     def calculate_population(self):  # Calculate the total population of the country and its subdivisions
         population = self.population
