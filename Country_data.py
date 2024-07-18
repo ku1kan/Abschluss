@@ -1,5 +1,7 @@
 class Country:
     def __init__(self, name, population, capital, area):
+        if population < 0 or area < 0:
+            raise ValueError("Number must be positive") #raises error if one of the Value is negative
         self.name = name
         self.population = population
         self.capital = capital
@@ -8,8 +10,8 @@ class Country:
 
     def add_subdivision(self, subdivision):
         if not isinstance(subdivision, Country):
-            raise ValueError ("Subdivison must be a Country Instance")
-            self.subdivisions.append(subdivision)
+            raise TypeError("Subdivison must be a Country Instance")
+        self.subdivisions.append(subdivision)
 
 
     def calculate_population(self):  # Calculate the total population of the country and its subdivisions
