@@ -77,6 +77,58 @@ class GUI:
                     f"{subdivision['Name']} - Population: {subdivision['Population']} "f" - Area: {subdivision['Area']}"
                 )
 
-                root = tk.TK
-                window = GUI(root, countries)
-                root.mainloop()
+    def add_new_country_window(self): #Opens a new window to add a country
+        self.add_add_new_country_window = tk.Toplevel(self.root)
+        self.add_add_new_country_window.title("Add New Country with Subdivisions")
+
+        #Creates the entry fields for country detailes
+        tk.Label(self.add_add_new_country_window, text="Country Name").pack()
+        self.name_entry = tk.Entry(self.add_add_new_country_window)
+        self.name_entry.pack()
+
+        tk.Label(self.add_add_new_country_window, text="Population:").pack()
+        self.name_entry = tk.Entry(self.add_add_new_country_window)
+        self.name_entry.pack()
+
+        tk.Label(self.add_add_new_country_window, text="Capital:").pack()
+        self.name_entry = tk.Entry(self.add_add_new_country_window)
+        self.name_entry.pack()
+
+        tk.label(self.add_add_new_country_window, text="Area").pack()
+        self.name_entry = tk.Entry(self.add_add_new_country_window)
+        self.name_entry.pack()
+
+
+        self.subdivision_frame = tk.Frame(self.add_add_new_country_window) #Creates a frame to show the info about the
+        self.subdivision_frame.pack(padx=10, pady=10)                       #subdivisions
+
+        # Initializes the list to hold subdivision entries
+        self.subdivision_entries = []
+        self.add_subdivision_entry()
+
+        #Creates a Button to add a subdivision and to add the Country
+        tk.Button(self.add_add_new_country_window,text="Add Subdivision",command=self.add_subdivision_entry).pack(pady=5)
+        tk.Button(self.add_add_new_country_window, text="Add Country", command=self.add_country).pack(pady=5)
+
+
+    def add_add_subdivision_entry(self):
+        entry_subdivision_frame = tk.Frame(self.subdivision_frame) #Creates a new entry frame for a subdivision
+        entry_subdivision_frame.pack(pady=5)
+
+        tk.Label(entry_frame, text="Subdivision:").pack(side=tk.LEFT)
+        name_entry = tk.Entry(entry_frame, width=20)
+        name_entry.pack(side=tk.LEFT)
+        tk.Label(entry_frame, text="Population:").pack(side=tk.LEFT)
+        population_entry = tk.Entry(entry_frame, width=10)
+        population_entry.pack(side=tk.LEFT)
+        tk.Label(entry_frame, text="Area:").pack(side=tk.LEFT)
+        area_entry = tk.Entry(entry_frame, width=10)
+        area_entry.pack(side=tk.LEFT)
+
+        self.subdivision_entries.append((name_entry, population_entry, area_entry)) #Adds the new subdivision to the list
+
+
+
+        root = tk.TK
+        window = GUI(root, countries)
+        root.mainloop()
