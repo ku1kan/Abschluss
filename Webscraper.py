@@ -1,3 +1,6 @@
+import requests as req
+from bs4 import BeautifulSoup
+
 def Agent(url, filename):
     '''
     Saves the html file from the url and saves it
