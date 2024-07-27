@@ -42,6 +42,7 @@ class GUI:
         self.subdivision_listbox.pack(padx=10, pady=10, side=tk.LEFT)
 
         # Configures the style of the Button for the "Add Country" Button
+        # Configures the style of the Button for the "Add Country" Button
         self.style.configure("Add.TButton", foreground="orange", font=("Arial", 14, "bold"))
         self.add_button = ttk.Button(self.root, text="Add New Country", style="Add.TButton",
                                      command=self.add_new_country_window)
@@ -49,10 +50,9 @@ class GUI:
 
         # Configures the style of the Button for the "Quit" Button
         self.style.configure("Quit.TButton", foreground="red", font=("Arial", 14, "bold"))
-
-        self.add_button = ttk.Button(self.root, text="Quit", style="Add.TButton",
-                                     command=self.root.destroy)
-        self.add_button.pack(padx=5, pady=5, side=tk.LEFT)  # Creates the "Quit" button
+        self.quit_button = ttk.Button(self.root, text="Quit", style="Quit.TButton",
+                                      command=self.root.destroy)
+        self.quit_button.pack(padx=5, pady=5, side=tk.LEFT)  # Creates the "Quit" button
 
         self.update_country_listbox()  # Updates the country listbox with the initial list of countries
 
@@ -84,20 +84,20 @@ class GUI:
 
         # Creates the entry fields for country details
         tk.Label(self.add_add_new_country_window, text="Country Name").pack()
-        self.name_entry = tk.Entry(self.add_add_new_country_window)
-        self.name_entry.pack()
+        self.country_name_entry = tk.Entry(self.add_add_new_country_window)
+        self.country_name_entry.pack()
 
         tk.Label(self.add_add_new_country_window, text="Population:").pack()
-        self.name_entry = tk.Entry(self.add_add_new_country_window)
-        self.name_entry.pack()
+        self.population_entry = tk.Entry(self.add_add_new_country_window)
+        self.population_entry.pack()
 
         tk.Label(self.add_add_new_country_window, text="Capital:").pack()
-        self.name_entry = tk.Entry(self.add_add_new_country_window)
-        self.name_entry.pack()
+        self.capital_entry = tk.Entry(self.add_add_new_country_window)
+        self.capital_entry.pack()
 
         tk.Label(self.add_add_new_country_window, text="Area").pack()
-        self.name_entry = tk.Entry(self.add_add_new_country_window)
-        self.name_entry.pack()
+        self.area_entry = tk.Entry(self.add_add_new_country_window)
+        self.area_entry.pack()
 
         self.subdivision_frame = tk.Frame(self.add_add_new_country_window)  # Creates a frame to show the info about the
         self.subdivision_frame.pack(padx=10, pady=10)  # subdivisions
@@ -128,12 +128,37 @@ class GUI:
         self.subdivision_entries.append(
             (name_entry, population_entry, area_entry))  # Adds the new subdivision to the list
 
-    def add_country(self):  #Gets the information of the new country
-        name = self.name_entry.get()
+    def add_country(self):  # Gets the information of the new country
+        name = self.country_name_entry.get()
         population = self.population_entry.get()
         capital = self.capital_entry.get()
         area = self.area_entry.get()
 
+        subdivisions = []  # Gets the subdivision det
+        for name_entry, population_entry, area_entry in self.subdivision_entries:
+            subdivision_name = name_entry.get()
+            subdivision_population = population_entry.get()
+            subdivision_area = area_entry.get()
+            if subdivision_name and subdivision_population and subdivision_area:
+                subdivisions.append({
+                    "Name": subdivision_name,
+                    "Population": subdivision_population,
+                    "Area": subdivision_area
+                })
+
+        add_new_country = {
+            "Country": name,
+            "Population": population,
+            "Capital": capital,
+            "Area": area,
+            "Subdivisions": subdivisions
+
+        }
+
+        # Adds new country to the list
+        self.countries.append(add_new_country)
+        self.update_country_listbox()
+        self.add_add_new_country_window.destroy()
 
 root = tk.Tk()
 window = GUI(root, countries)
