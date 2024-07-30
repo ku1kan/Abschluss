@@ -1,5 +1,4 @@
 from Country_data import Country, Subdivision
-from Countries_info import countries
 
 
 class Crud:
@@ -14,126 +13,99 @@ class Crud:
 
     def find_country(self, name):
         # Find a country by its name
-        return next((c for c in self.countries if c.name == name), None)
+        for country in self.countries:
+            if country.name == name:
+                return country
+        return None
 
     def read_country(self, name):
-        # Retrieve the country by name and print its details
+        # Retrieve the country by name and return its details
         country = self.find_country(name)
         if country:
             return country.output_info()
-        else:
-            print(f"Country '{name}' not found.")
+        return f"Country '{name}' not found."
 
-    def update_country(self, name, **kwargs):
+    def update_country(self, name, population=None, capital=None, area=None):
         # Find the country and update its details
         country = self.find_country(name)
         if country:
-            for key, value in kwargs.items():
-                if key == "population":
-                    try:
-                        country.population = int(value)
-                    except ValueError as e:
-                        print(f"Error updating population for '{name}': {e}")
-                        return
-                elif key == "capital":
-                    country.capital = value
-                elif key == "area":
-                    try:
-                        country.area = int(value)
-                    except ValueError as e:
-                        print(f"Error updating area for '{name}': {e}")
-                        return
-            print(f"Country '{name}' updated.")
-        else:
-            print(f"Country '{name}' not found.")
+            if population is not None:
+                country.population = population
+            if capital is not None:
+                country.capital = capital
+            if area is not None:
+                country.area = area
+            return f"Country '{name}' updated."
+        return f"Country '{name}' not found."
 
     def delete_country(self, name):
         # Find the country and remove it from the list
         country = self.find_country(name)
         if country:
             self.countries.remove(country)
-            print(f"Country '{name}' deleted.")
-        else:
-            print(f"Country '{name}' not found.")
+            return f"Country '{name}' deleted."
+        return f"Country '{name}' not found."
 
     def create_subdivision(self, country_name, name, population, area, capital):
         # Find the country where we want to add the subdivision
         country = self.find_country(country_name)
         if not country:
-            print(f"Country '{country_name}' not found.")
-            return
+            return f"Country '{country_name}' not found."
 
         # Check if the subdivision already exists
-        if any(sub.name == name for sub in country.subdivisions):
-            print(f"Subdivision '{name}' already exists in {country_name}.")
-            return
+        for sub in country.subdivisions:
+            if sub.name == name:
+                return f"Subdivision '{name}' already exists in {country_name}."
 
-        try:
-            # Create a new Subdivision object and add it to the country's list
-            subdivision = Subdivision(name, int(population), capital, int(area))
-            country.add_subdivision(subdivision)
-            print(f"Subdivision '{name}' created in {country_name}.")
-        except ValueError as e:
-            print(f"Error creating subdivision '{name}' in {country_name}: {e}")
+        # Create a new Subdivision object and add it to the country's list
+        subdivision = Subdivision(name, population, capital, area)
+        country.add_subdivision(subdivision)
+        return f"Subdivision '{name}' created in {country_name}."
 
     def read_subdivision(self, country_name, name):
         # Find the country first
         country = self.find_country(country_name)
         if not country:
-            print(f"Country '{country_name}' not found.")
-            return
+            return f"Country '{country_name}' not found."
 
         # Find the subdivision within the country
-        subdivision = next((sub for sub in country.subdivisions if sub.name == name), None)
-        if subdivision:
-            subdivision.output_info_subdivisions()
-            print(f"Total population with subdivisions: {subdivision.calculate_population()}\n")
-        else:
-            print(f"Subdivision '{name}' not found in {country_name}.")
+        for sub in country.subdivisions:
+            if sub.name == name:
+                info = sub.output_info_subdivisions()
+                population = sub.calculate_population()
+                return f"{info}\nTotal population with subdivisions: {population}"
 
-    def update_subdivision(self, country_name, name, **kwargs):
+        return f"Subdivision '{name}' not found in {country_name}."
+
+    def update_subdivision(self, country_name, name, population=None, capital=None, area=None):
         # Find the country first
         country = self.find_country(country_name)
         if not country:
-            print(f"Country '{country_name}' not found.")
-            return
+            return f"Country '{country_name}' not found."
 
         # Find the subdivision within the country
-        subdivision = next((sub for sub in country.subdivisions if sub.name == name), None)
-        if subdivision:
-            # Update subdivision details if provided
-            for key, value in kwargs.items():
-                if key == "population":
-                    try:
-                        subdivision.population = int(value)
-                    except ValueError as e:
-                        print(f"Error updating population for '{name}' in {country_name}: {e}")
-                        return
-                elif key == "capital":
-                    subdivision.capital = value
-                elif key == "area":
-                    try:
-                        subdivision.area = int(value)
-                    except ValueError as e:
-                        print(f"Error updating area for '{name}' in {country_name}: {e}")
-                        return
-            print(f"Subdivision '{name}' updated in {country_name}.")
-        else:
-            print(f"Subdivision '{name}' not found in {country_name}.")
+        for sub in country.subdivisions:
+            if sub.name == name:
+                if population is not None:
+                    sub.population = population
+                if capital is not None:
+                    sub.capital = capital
+                if area is not None:
+                    sub.area = area
+                return f"Subdivision '{name}' updated in {country_name}."
+
+        return f"Subdivision '{name}' not found in {country_name}."
 
     def delete_subdivision(self, country_name, name):
         # Find the country first
         country = self.find_country(country_name)
         if not country:
-            print(f"Country '{country_name}' not found.")
-            return
+            return f"Country '{country_name}' not found."
 
         # Find and remove the subdivision
-        subdivision = next((sub for sub in country.subdivisions if sub.name == name), None)
-        if subdivision:
-            country.subdivisions.remove(subdivision)
-            print(f"Subdivision '{name}' deleted from {country_name}.")
-        else:
-            print(f"Subdivision '{name}' not found in {country_name}.")
+        for sub in country.subdivisions:
+            if sub.name == name:
+                country.subdivisions.remove(sub)
+                return f"Subdivision '{name}' deleted from {country_name}."
 
-
+        return f"Subdivision '{name}' not found in {country_name}."
