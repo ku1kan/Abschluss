@@ -16,37 +16,44 @@ class GUI:
         self.style.map("TButton", foreground=[("pressed", "blue"), ("active", "yellow")])  # For Style configuration
 
         self.root.title("Country-Data")  # Window Title
-        self.root.geometry("1100x1000")  # Window Size
+        self.root.geometry("900x500")  # Window Size
+
+        self.main_frame = ttk.Frame(self.root, padding=(15, 15, 15, 15))
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
 
         # Creates the Listbox to show the display info
-        self.country_listbox = tk.Listbox(self.root, width=40, height=15)
-        self.country_listbox.pack(padx=15, pady=15, side=tk.LEFT)
+        self.country_listbox = tk.Listbox(self.main_frame, font=("Arial", 12), justify="center", width=25,
+                                          selectbackground="blue")
+        self.country_listbox.grid(row=0, column=0, rowspan=6, padx=(0, 20), pady=(0, 10))
         self.country_listbox.bind("<<ListboxSelect>>", self.show_country_info_data)
+
+
 
         # Creates a frame to display the detailed country information
         self.info_frame = tk.Frame(self.root)
         self.info_frame.pack(padx=10, pady=10, side=tk.LEFT, fill=tk.NONE)
 
         # Creates the labels to display the country details
-        self.country_label = tk.Label(self.info_frame, text="Country: ")
+        self.country_label = ttk.Label(self.info_frame, text="Country: ", font=("Arial", 12))
         self.country_label.pack()
-        self.population_label = tk.Label(self.info_frame, text="Population: ")
+        self.population_label = ttk.Label(self.info_frame, text="Population: ", font=("Arial", 12))
         self.population_label.pack()
-        self.capital_label = tk.Label(self.info_frame, text="Capital: ")
+        self.capital_label = ttk.Label(self.info_frame, text="Capital: ", font=("Arial", 12))
         self.capital_label.pack()
-        self.area_label = tk.Label(self.info_frame, text="Area: ")
+        self.area_label = ttk.Label(self.info_frame, text="Area: ", font=("Arial", 12))
         self.area_label.pack()
 
+
         # Creates the Listbox to display subdivisions
-        self.subdivision_listbox = tk.Listbox(self.root, width=65, height=10)
+        self.subdivision_listbox = tk.Listbox(self.root, width=65, height=10, selectbackground="blue")
         self.subdivision_listbox.pack(padx=10, pady=10, side=tk.LEFT)
 
-        # Configures the style of the Button for the "Add Country" Button
+
         # Configures the style of the Button for the "Add Country" Button
         self.style.configure("Add.TButton", foreground="orange", font=("Arial", 14, "bold"))
         self.add_button = ttk.Button(self.root, text="Add New Country", style="Add.TButton",
                                      command=self.add_new_country_window)
-        self.add_button.pack(padx=6, pady=6, side=tk.LEFT)
+        self.add_button.pack(padx=5, pady=5, side=tk.LEFT)
 
         # Configures the style of the Button for the "Quit" Button
         self.style.configure("Quit.TButton", foreground="red", font=("Arial", 14, "bold"))
@@ -80,22 +87,22 @@ class GUI:
 
     def add_new_country_window(self):  # Opens a new window to add a country
         self.add_add_new_country_window = tk.Toplevel(self.root)
-        self.add_add_new_country_window.title("Add New Country with Subdivisions")
+        self.add_add_new_country_window.title("Add New Country with Subdivisions" )
 
         # Creates the entry fields for country details
-        tk.Label(self.add_add_new_country_window, text="Country Name").pack()
+        tk.Label(self.add_add_new_country_window, text="Country Name", font=("Arial", 10, "bold")).pack()
         self.country_name_entry = tk.Entry(self.add_add_new_country_window)
         self.country_name_entry.pack()
 
-        tk.Label(self.add_add_new_country_window, text="Population:").pack()
+        tk.Label(self.add_add_new_country_window, text="Population:", font=("Arial", 10, "bold")).pack()
         self.population_entry = tk.Entry(self.add_add_new_country_window)
         self.population_entry.pack()
 
-        tk.Label(self.add_add_new_country_window, text="Capital:").pack()
+        tk.Label(self.add_add_new_country_window, text="Capital:", font=("Arial", 10, "bold")).pack()
         self.capital_entry = tk.Entry(self.add_add_new_country_window)
         self.capital_entry.pack()
 
-        tk.Label(self.add_add_new_country_window, text="Area").pack()
+        tk.Label(self.add_add_new_country_window, text="Area in km²", font=("Arial", 10, "bold")).pack()
         self.area_entry = tk.Entry(self.add_add_new_country_window)
         self.area_entry.pack()
 
@@ -107,23 +114,24 @@ class GUI:
         self.add_add_subdivision_entry()
 
         # Creates a Button to add a subdivision and to add the Country
-        tk.Button(self.add_add_new_country_window, text="Add Subdivision", command=self.add_add_subdivision_entry).pack(
-            pady=5)
+        (tk.Button(self.add_add_new_country_window, text="Add Subdivision", command=self.add_add_subdivision_entry)
+         .pack(pady=5))
+
         tk.Button(self.add_add_new_country_window, text="Add Country", command=self.add_country).pack(pady=5)
 
     def add_add_subdivision_entry(self):
-        entry_subdivision_frame = tk.Frame(self.subdivision_frame)  # Creates a new entry frame for a subdivision
-        entry_subdivision_frame.pack(pady=5)
+        entry_subdivision_frame = ttk.Frame(self.subdivision_frame)  # Creates a new entry frame for a subdivision
+        entry_subdivision_frame.pack(pady=5, fill=tk.X)
 
-        tk.Label(entry_subdivision_frame, text="Subdivision:").pack(side=tk.LEFT)
+        tk.Label(entry_subdivision_frame, text="Subdivision:", font=("Arial", 10, "bold")).pack(side=tk.LEFT)
         name_entry = tk.Entry(entry_subdivision_frame, width=20)
-        name_entry.pack(side=tk.LEFT)
-        tk.Label(entry_subdivision_frame, text="Population:").pack(side=tk.LEFT)
-        population_entry = tk.Entry(entry_subdivision_frame, width=10)
-        population_entry.pack(side=tk.LEFT)
-        tk.Label(entry_subdivision_frame, text="Area:").pack(side=tk.LEFT)
-        area_entry = tk.Entry(entry_subdivision_frame, width=10)
-        area_entry.pack(side=tk.LEFT)
+        name_entry.pack(side=tk.LEFT, padx=(10, 10))
+        tk.Label(entry_subdivision_frame, text="Population:", font=("Arial", 10, "bold")).pack(side=tk.LEFT)
+        population_entry = tk.Entry(entry_subdivision_frame, width=20)
+        population_entry.pack(side=tk.LEFT, padx=(10, 10))
+        tk.Label(entry_subdivision_frame, text="Area:", font=("Arial", 10, "bold")).pack(side=tk.LEFT)
+        area_entry = tk.Entry(entry_subdivision_frame, width=20)
+        area_entry.pack(side=tk.LEFT, padx=(10, 10))
 
         self.subdivision_entries.append(
             (name_entry, population_entry, area_entry))  # Adds the new subdivision to the list
