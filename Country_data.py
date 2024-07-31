@@ -1,3 +1,6 @@
+from Countries_info import countries
+
+
 class Country:
     def __init__(self, name, population, capital, area):
         if population < 0 or area < 0:
@@ -61,4 +64,37 @@ class Subdivision:
             print("Smaller-Subdivisions:")
             for subdivision in self.subdivisions:
                 print(f"\t{subdivision.name}: Population - {subdivision.population}, Area - {subdivision.area}")
+
+
+# Create a Country object from the provided data
+def calculate_whole_population(info):
+    # Initialize the Country with main attributes
+    country = Country(
+        info["Country"],
+        info["Population"],
+        info["Capital"],
+        info["Area"]
+    )
+
+    # Add each subdivision to the country
+    for subdivision_data in info["Subdivisions"]:
+        country.add_subdivision(
+            Subdivision(
+                subdivision_data["Name"],
+                subdivision_data["Population"],
+                subdivision_data["Capital"],
+                subdivision_data["Area"]
+            )
+        )
+
+    return country
+
+
+# Generate a list of Country objects from the data
+countries_info = [calculate_whole_population(info) for info in countries]
+
+# Print information and total population for each country
+for country in countries_info:
+    country.output_info()
+    print(f"Total population with the subdivisions: {country.calculate_population()}\n")
 
