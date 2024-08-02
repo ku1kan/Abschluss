@@ -28,16 +28,16 @@ def main():
             return f"Country '{name}' not found."
 
         def update_country(self, name, population=None, capital=None, area=None):
-            # Finds the country and update its details
-            country = self.find_country(name)
+            country = self.find_country(name)  # Finds the country and update its details
             if country:
-                if population is not None:
+                if population is not None:  # Updates the population if a new value is provided
                     country.population = population
                 if capital is not None:
-                    country.capital = capital
+                    country.capital = capital  # Updates the population if new value is provided
                 if area is not None:
-                    country.area = area
+                    country.area = area  # Updates the area if new value is provided
                 return f"Country '{name}' updated."
+
             return f"Country '{name}' not found."
 
         def delete_country(self, name):
@@ -71,8 +71,8 @@ def main():
 
             # Find the subdivision within the country
             for sub in country.subdivisions:
-                if sub.name == name:
-                    info = sub.output_info_subdivisions()
+                if sub.name == name:  # Checks if the currents subdivision name matches for the name we are looking for
+                    info = sub.output_info_subdivisions()  # Gets the information for the subdivision
                     population = sub.calculate_population()
                     return f"{info}\nTotal population with subdivisions: {population}"
 
@@ -84,35 +84,31 @@ def main():
             if not country:
                 return f"Country '{country_name}' not found."
 
-            # Find the subdivision within the country
-            for sub in country.subdivisions:
+            for sub in country.subdivisions:  # Goes through each Subdivision in the country subdivision list
                 if sub.name == name:
-                    if population is not None:
+                    if population is not None:  # Updates the population if a new value is provided
                         sub.population = population
-                    if capital is not None:
+                    if capital is not None:  # Updates the capital if new value is provided
                         sub.capital = capital
-                    if area is not None:
+                    if area is not None:  # Updates the area if new value is provided
                         sub.area = area
                     return f"Subdivision '{name}' updated in {country_name}."
 
-            return f"Subdivision '{name}' not found in {country_name}."
+                return f"Subdivision '{name}' not found in {country_name}."
 
         def delete_subdivision(self, country_name, name):
             # Removes the subdivision from the country
             country = self.find_country(country_name)
             if not country:
-                return f"Country '{country_name}' not found."
-
-            # Find and remove the subdivision
-            for sub in country.subdivisions:
+                return f"Country '{country_name}' not found."  # Checks if the country has been found
+            for sub in country.subdivisions:  # Looks through the country's subdivision list
                 if sub.name == name:
                     country.subdivisions.remove(sub)
                     return f"Subdivision '{name}' deleted from {country_name}."
 
             return f"Subdivision '{name}' not found in {country_name}."
 
-        def load_data(self, data):
-            # Load data to create countries and subdivisions
+        def load_data(self, data):  # Loads existing data to create the countries and subdivisions
             for entry in data:
                 try:
                     self.create_country(entry["Country"], entry["Population"], entry["Capital"],
@@ -153,6 +149,84 @@ def main():
     print(crud.read_country("France"))  # Should indicate the country is not found
     print(crud.read_subdivision("Germany", "Hamburg"))  # Should indicate the subdivision is not found
 
+    def print_menu():  # Creates a Menu to choose from 9 Options
+        print("\nMenu For Country and Subdivision:")
+        print("1. Create Country")
+        print("2. Read Country")
+        print("3. Update Country")
+        print("4. Delete Country")
+        print("5. Create Subdivision")
+        print("6. Read Subdivision")
+        print("7. Update Subdivision")
+        print("8. Delete Subdivision")
+        print("9. Exit")
+        print("----------------------------")
+
+    while True:  # Loop for the main menu
+        print_menu()  # Prints the menu options for the user
+
+        choice = input("Choose an option: ")  # Ask the User for a choice
+
+        if choice == "1":  # Creates a New Country
+            name = input("Country name: ")
+            population = int(input("Population: "))
+            capital = input("Capital: ")
+            area = (input("Area in sq km: "))
+            print(crud.create_country(name, population, capital, area))
+
+        elif choice == "2":  # Reads the Country details
+            name = input("Country name: ")
+            print(crud.read_country(name))
+
+        elif choice == "3":  # Updates the information from the country
+            name = input("Country name: ")
+            population = input("New population : ")
+            capital = input("New capital: ")
+            area = input("New area : ")
+            population = population if population else None
+            capital = capital if capital else None
+            area = area if area else None
+            print(crud.update_country(name, population, capital, area))
+
+        elif choice == "4":  # Deletes a Country
+            name = input("Country name: ")
+            print(crud.delete_country(name))
+
+        elif choice == "5":  # Creates a new subdivision
+            country_name = input("Country name: ")
+            name = input("Subdivision name: ")
+            population = (input("Population: "))
+            area = (input("Area in sq km: "))
+            capital = input("Capital: ")
+            print(crud.create_subdivision(country_name, name, population, area, capital))
+
+        elif choice == "6":  # Gives the option to read the subdivision details
+            country_name = input("Country name: ")
+            name = input("Subdivision name: ")
+            print(crud.read_subdivision(country_name, name))
+
+        elif choice == "7":  # Option to update the information from the subdivision
+            country_name = input("Country name: ")
+            name = input("Subdivision name: ")
+            population = input("New population : ")
+            capital = input("New capital : ")
+            area = input("New area : ")
+            population = population if population else None
+            capital = capital if capital else None
+            area = area if area else None
+            print(crud.update_subdivision(country_name, name, population, capital, area))
+
+        elif choice == "8":  # Deletes the subdivision
+            country_name = input("Country name: ")
+            name = input("Subdivision name: ")
+            print(crud.delete_subdivision(country_name, name))
+
+        elif choice == "9":  # Exists the program
+            print("End Program.")
+            break
+
+        else:
+            print("Try again.")
 
 
 if __name__ == "__main__":
