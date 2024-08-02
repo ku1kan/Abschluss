@@ -3,13 +3,19 @@ from Countries_info import countries
 
 class Country:
     def __init__(self, name, population, capital, area):
-        if population < 0 or area < 0:
+        if int(population) < 0 or int(area) < 0:
             raise ValueError("Population and area must be non-negative")
         self.name = name
-        self.population = population
+        self.population = int(population)
         self.capital = capital
-        self.area = area
+        self.area = int(area)
         self.subdivisions = []  # A list to store subdivisions
+
+    def __str__(self): # Returns the new Country with its Information
+        return (f"Country: {self.name}\n"
+                f"Population: {self.population}\n"
+                f"Capital: {self.capital}\n"
+                f"Area: {self.area} sq km")
 
     def add_subdivision(self, subdivision):
         # Ensure the subdivision is of the correct type.
@@ -41,13 +47,19 @@ class Country:
 
 class Subdivision:
     def __init__(self, name, population, capital, area):
-        if population < 0 or area < 0:
+        if int(population) < 0 or int(area) < 0:
             raise ValueError("Population and area must be non-negative")
         self.name = name
-        self.population = population
+        self.population = int(population)
         self.capital = capital
-        self.area = area
+        self.area = int(area)
         self.subdivisions = []  # This stores the smaller subdivisions
+
+    def __str__(self): # Returns the new Subdivision with its information
+        return (f"Subdivision: {self.name}\n"
+                f"Population: {self.population}\n"
+                f"Capital: {self.capital}\n"
+                f"Area: {self.area} sq km")
 
     def add_subdivision(self, subdivision):
         # Ensure the subdivision is of the correct type.
@@ -84,7 +96,7 @@ def calculate_whole_population(info):
         info["Capital"],
         info["Area"]
     )
-    # Add subdivisions to the country.
+    # Add each subdivision to the country.
     for subdivision_data in info["Subdivisions"]:
         country.add_subdivision(
             Subdivision(
