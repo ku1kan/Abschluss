@@ -57,7 +57,7 @@ class TestCountryAndSubdivision(unittest.TestCase):
         )
         # Should increase the total number of subdivision by 1
         self.country.add_subdivision(new_subdivision)
-        self.assertEqual(len(self.country.subdivisions),len(countries[0]["Subdivisions"]) + 1)
+        self.assertEqual(len(self.country.subdivisions), len(countries[0]["Subdivisions"]) + 1)
 
     def test_calculate_population(self):
         # Checks if the total calculation is correct
@@ -92,7 +92,7 @@ class TestCountryAndSubdivision(unittest.TestCase):
     def test_invalid_population_and_area(self):
         # Raises ValueError for invalid negative  population and area
         with self.assertRaises(ValueError):
-            Country("Test-Land", -1, "Test City", 500000)
+            Country("Test-Land", -1, "Test City", 500000.0)
         with self.assertRaises(ValueError):
             Subdivision("Test-Region", 200000, "Test-City", -1)
 

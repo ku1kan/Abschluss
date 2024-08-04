@@ -41,7 +41,7 @@ def main():
                 if area is not None:
                     # Updates the area if a new value is provided
                     try:
-                        country.area = float(area)
+                        country.area = int(area)
                     except ValueError:
                         return "Area must be a number"
                 return f"Country '{name}' updated."
@@ -105,7 +105,7 @@ def main():
                     if area is not None:
                         # Updates the area if a new value is provided
                         try:
-                            sub.area = float(area)
+                            sub.area = int(area)
                         except ValueError:
                             return "Area must be a number"
                     return f"Subdivision '{name}' updated in {country_name}."
@@ -187,7 +187,7 @@ def main():
             name = input("Country name: ")
             population = int(input("Population: "))
             capital = input("Capital: ")
-            area = float(input("Area in sq km: "))
+            area = int(input("Area in sq km: "))
             print(crud.create_country(name, population, capital, area))
 
         elif choice == "2":  # Reads the Country details
@@ -227,7 +227,7 @@ def main():
             population = int("New population: ")
             capital = input("New capital: ")
             area = input("New area: ")
-            population = float(population) if population else None
+            population = int(population) if population else None
             capital = capital if capital else None
             area = float(area) if area else None
             print(crud.update_subdivision(country_name, name, population, capital, area))

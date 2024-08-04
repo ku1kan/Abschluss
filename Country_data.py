@@ -3,12 +3,12 @@ from Countries_info import countries
 
 class Country:
     def __init__(self, name, population, capital, area):
-        if int(population) < 0 or float(area) < 0:
+        if int(population) < 0 or int(area) < 0:
             raise ValueError("Population and area must be non-negative")
         self.name = name
         self.population = int(population) # use int to handle numbers
         self.capital = capital
-        self.area = float(area)  # can handle decimal numbers
+        self.area = int(area)  # can use float as well
         self.subdivisions = []  # A list to store subdivisions
 
     def __str__(self):  # Returns a string representation of the Country
@@ -50,7 +50,7 @@ class Subdivision:
         self.name = name
         self.population = int(population) # use int to handle numbers
         self.capital = capital
-        self.area = float(area) # Can handle decimal numbers
+        self.area = int(area) # can use float as well
         self.subdivisions = []  # This stores the smaller subdivisions
 
     def __str__(self):  # Returns a string representation of the subdivisions

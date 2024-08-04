@@ -7,7 +7,7 @@ class TestCountryCrud(unittest.TestCase):
         self.crud = Crud()  # Fresh instance of CRUD for each test, to avoid the possibility of cross-test pollution
 
     def test_create_country(self):
-        self.crud.create_country("Germany", 83000000, "Berlin", 357022.)  # Creates Germany
+        self.crud.create_country("Germany", 83000000, "Berlin", 357022)  # Creates Germany
 
         country = next((c for c in self.crud.countries if c.name == "Germany"),
                        None)  # Checks for the Country in the List
