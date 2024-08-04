@@ -229,7 +229,7 @@ def main():
             area = input("New area: ")
             population = int(population) if population else None
             capital = capital if capital else None
-            area = float(area) if area else None
+            area = int(area) if area else None
             print(crud.update_subdivision(country_name, name, population, capital, area))
 
         elif choice == "8":  # Deletes the subdivision
