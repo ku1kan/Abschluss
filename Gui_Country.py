@@ -146,7 +146,7 @@ class GUI:
         capital = self.capital_entry.get()
         area = self.area_entry.get()
 
-        subdivisions = []  # Gets the subdivision det
+        subdivisions = []  # Gets the information from the subdivisions
         for name_entry, population_entry, area_entry in self.subdivision_entries:
             subdivision_name = name_entry.get()
             subdivision_population = population_entry.get()
@@ -158,7 +158,7 @@ class GUI:
                     "Area": subdivision_area
                 })
 
-        add_new_country = {
+        add_new_country = { # Creates a entry for a new Country
             "Country": name,
             "Population": population,
             "Capital": capital,
@@ -167,10 +167,10 @@ class GUI:
 
         }
 
-        # Adds new country to the list
+        # Adds new country to the list and updates the list
         self.countries.append(add_new_country)
         self.update_country_listbox()
-        self.add_add_new_country_window.destroy()
+        self.add_add_new_country_window.destroy() # Closes the "Add Country Window"
 
 
 root = tk.Tk()
