@@ -8,7 +8,7 @@ from Countries_info import countries
 class TestCountryAndSubdivision(unittest.TestCase):
 
     def setUp(self):
-        data = countries[0]  # Uses the information from the first country and sets it up for the testing
+        data = countries[0]  # Uses the information from the first country
 
         # Create a Country object with its attributes
         self.country = Country(
@@ -29,7 +29,7 @@ class TestCountryAndSubdivision(unittest.TestCase):
             self.country.add_subdivision(subdivision)
 
     def test_country(self):
-        data = countries[0]  # Uses the information for the first country
+        data = countries[0]
 
         # Checks the expected Value of the given Attributes (country,population,Capital,Area,subdivision)
         self.assertEqual(self.country.name, data["Country"])
@@ -48,22 +48,23 @@ class TestCountryAndSubdivision(unittest.TestCase):
             self.assertEqual(subdivision.capital, subdivision_data["Capital"])
             self.assertEqual(subdivision.area, subdivision_data["Area"])
 
-    def test_add_subdivision(self):
+    def test_add_subdivision(self):  # Verifies that adding a new subdivision updates the list correct
         new_subdivision = Subdivision(
             name="New Region",
             population=500000,
             capital="New City",
             area=576
         )
+        # Should increase the total number of subdivision by 1
         self.country.add_subdivision(new_subdivision)
-        # Check to see if the numbers of the subdivisions increased by 1
-        self.assertEqual(len(self.country.subdivisions), len(countries[0]["Subdivisions"]) + 1)
+        self.assertEqual(len(self.country.subdivisions),len(countries[0]["Subdivisions"]) + 1)
 
     def test_calculate_population(self):
+        # Checks if the total calculation is correct
         data = countries[0]
         total_population = data["Population"] + sum(
-            sub["Population"] for sub in data["Subdivisions"])  # Total population including subdivisions
-        self.assertEqual(self.country.calculate_population(), total_population)  # Checks if the calculation is correct
+            sub["Population"] for sub in data["Subdivisions"])
+        self.assertEqual(self.country.calculate_population(), total_population)
 
     def test_output_info(self):
         captured_output = io.StringIO()  # Gets the output of the country and prints it as a stdout
@@ -72,7 +73,7 @@ class TestCountryAndSubdivision(unittest.TestCase):
         self.country.output_info()  # Prints the country information
 
         sys.stdout = sys.__stdout__  # Resets the stdout to its Original state
-        output = captured_output.getvalue()
+        output = captured_output.getvalue()  # Shows the output
 
         # Checks if the output has the correct information
         self.assertIn(f"Country: {self.country.name}", output)
@@ -80,6 +81,8 @@ class TestCountryAndSubdivision(unittest.TestCase):
         self.assertIn(f"Capital: {self.country.capital}", output)
         self.assertIn(f"Area: {self.country.area}", output)
         self.assertIn("Subdivisions:", output)
+
+        # Makes sure that each subdivision detail is included in the output
         for subdivision in self.country.subdivisions:
             self.assertIn(f"Subdivision: {subdivision.name}", output)
             self.assertIn(f"Population: {subdivision.population}", output)
@@ -87,12 +90,14 @@ class TestCountryAndSubdivision(unittest.TestCase):
             self.assertIn(f"Area: {subdivision.area}", output)
 
     def test_invalid_population_and_area(self):
-        with self.assertRaises(ValueError):  # Raises ValueError for invalid negative  population and area
+        # Raises ValueError for invalid negative  population and area
+        with self.assertRaises(ValueError):
             Country("Test-Land", -1, "Test City", 500000)
         with self.assertRaises(ValueError):
-            Subdivision("Test-Region", 200000, "Test-City", -1)  # Raise ValueError if area is negative
+            Subdivision("Test-Region", 200000, "Test-City", -1)
 
     def test_add_invalid_subdivision(self):
+        # Ensure adding a non-Subdivision object raises TypeError
         with self.assertRaises(TypeError):
             self.country.add_subdivision("Not a Subdivision")
 
@@ -113,7 +118,6 @@ class TestCountryAndSubdivision(unittest.TestCase):
                     area=subdivision_data["Area"]
                 )
                 country.add_subdivision(subdivision)
-            # Checks if the total calculation is correct
             self.assertEqual(country.calculate_population(), country_data["Population"] +
                              sum(sub["Population"] for sub in country_data["Subdivisions"]))
 
