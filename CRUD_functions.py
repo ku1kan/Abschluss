@@ -7,6 +7,11 @@ class Crud:
         self.countries = []  # Start with an empty list to keep track of countries
 
     def create_country(self, name, population, capital, area):  # Create a new Country instance and add it to our list
+        try:
+            population = int(population)
+            area = int(area)
+        except ValueError:
+            return "Population and Area must be integers."
         new_country = Country(name, population, capital, area)
         self.countries.append(new_country)
         return new_country
@@ -30,11 +35,17 @@ class Crud:
         country = self.find_country(name)
         if country:
             if population is not None:
-                country.population = population
+                try:
+                    country.population = int(population)
+                except ValueError:
+                    return "Population must be a number"
             if capital is not None:
                 country.capital = capital
             if area is not None:
-                country.area = area
+                try:
+                    country.area = int(area)
+                except ValueError:
+                    return "Area must be a number"
             return f"Country '{name}' updated."
         return f"Country '{name}' not found."
 
@@ -86,11 +97,17 @@ class Crud:
         for sub in country.subdivisions:
             if sub.name == name:
                 if population is not None:
-                    sub.population = population
+                    try:
+                        sub.population = int(population)
+                    except ValueError:
+                        return "Population must be an integer"
                 if capital is not None:
                     sub.capital = capital
                 if area is not None:
-                    sub.area = area
+                    try:
+                        sub.area = int(area)
+                    except ValueError:
+                        return "Area must be an number"
                 return f"Subdivision '{name}' updated in {country_name}."
 
         return f"Subdivision '{name}' not found in {country_name}."
@@ -151,4 +168,5 @@ if __name__ == "__main__":
 
     # Check if the country and subdivision were deleted successfully
     print(crud.read_country("France"))  # Should show that France is not found
+
     print(crud.read_subdivision("Germany", "Hamburg"))  # Should show that Hamburg is not found
