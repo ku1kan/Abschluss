@@ -11,7 +11,7 @@ class Country:
         self.area = int(area)
         self.subdivisions = []  # A list to store subdivisions
 
-    def __str__(self): # Returns the new Country with its Information
+    def __str__(self):  # Returns a string representation of the Country
         return (f"Country: {self.name}\n"
                 f"Population: {self.population}\n"
                 f"Capital: {self.capital}\n"
@@ -21,17 +21,15 @@ class Country:
         # Ensure the subdivision is of the correct type.
         if not isinstance(subdivision, Subdivision):
             raise TypeError("Subdivision must be a Subdivision instance")
-        # Add the subdivision to the list.
         self.subdivisions.append(subdivision)
         print(f"Added subdivision: {subdivision.name}")  # Just a check to ensure it's added correctly.
 
     def calculate_population(self):  # Calculate the total population of the country and its subdivisions
-        # Start with the country's population.
         total_population = self.population
         for subdivision in self.subdivisions:
-            total_population += subdivision.calculate_population() # Iterate over the subdivisions and add their
+            total_population += subdivision.calculate_population()  # Iterate over the subdivisions and add their
             # populations to the total
-        return total_population # Return the total population.
+        return total_population
 
     def output_info(self):  # Prints the country information
         print(f"Country: {self.name}")
@@ -55,7 +53,7 @@ class Subdivision:
         self.area = int(area)
         self.subdivisions = []  # This stores the smaller subdivisions
 
-    def __str__(self): # Returns the new Subdivision with its information
+    def __str__(self):  # Returns a string representation of the subdivisions
         return (f"Subdivision: {self.name}\n"
                 f"Population: {self.population}\n"
                 f"Capital: {self.capital}\n"
@@ -89,7 +87,7 @@ class Subdivision:
 
 # Create a Country object from the provided data
 def calculate_whole_population(info):
-    # Initialize/ Create a new Country with main attributes
+    # Create a Country object from the provided data
     country = Country(
         info["Country"],
         info["Population"],
@@ -113,7 +111,7 @@ def calculate_whole_population(info):
 # Generate a list of Country objects from the data
 countries_info = [calculate_whole_population(info) for info in countries]
 
-# Print information and total population for each country
+# Print information and total population for each country with its subdivisions
 for country in countries_info:
     country.output_info()
     print(f"Total population with the subdivisions: {country.calculate_population()}\n")
